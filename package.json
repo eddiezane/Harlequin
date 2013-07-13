@@ -1,0 +1,22 @@
+{
+  "name": "harlequin",
+  "version": "0.0.0",
+  "description": "Harlequin =========",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/eddiezane/Harlequin.git"
+  },
+  "author": "James Gary, Neal Young, Eddie Zaneski",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/eddiezane/Harlequin/issues"
+  },
+  "dependencies": {
+    "express": "~3.3.4",
+    "socket.io": "~0.9.16"
+  }
+}
