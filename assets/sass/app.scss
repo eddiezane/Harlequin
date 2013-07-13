@@ -1,0 +1,27 @@
+@import "settings";
+@import "normalize";
+@import "foundation";
+
+// hiding for development purposes:
+#splash, #lobby { display: none; }
+
+#lobby {
+  .create-room {
+    a {
+      font-size: 24px;
+      margin-bottom: 12px;
+      display: block;
+      position: relative;
+    }
+    input[type=radio] { display: none } // use custom foundation style
+  }
+}
+
+#room {
+  .leaderboard {
+    width: 100%;
+  }
+  .chat {
+    width: 100%;
+  }
+}
