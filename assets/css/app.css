@@ -6686,27 +6686,40 @@ a.th {
 }
 
 /* line 6, ../sass/app.scss */
-#splash, #lobby {
+#splash {
   display: none;
 }
 
-/* line 10, ../sass/app.scss */
-#lobby .create-room a {
-  font-size: 24px;
-  margin-bottom: 12px;
+/* line 7, ../sass/app.scss */
+#lobby {
+  display: none;
+}
+
+/* line 11, ../sass/app.scss */
+#splash .subtitle {
+  text-align: center;
   display: block;
   position: relative;
-}
-/* line 16, ../sass/app.scss */
-#lobby .create-room input[type=radio] {
-  display: none;
+  font-size: 24px;
+  margin: 20px;
 }
 
 /* line 21, ../sass/app.scss */
+#lobby .button {
+  margin: 20px;
+}
+
+/* line 27, ../sass/app.scss */
 #room .leaderboard {
   width: 100%;
 }
-/* line 24, ../sass/app.scss */
+/* line 30, ../sass/app.scss */
 #room .chat {
   width: 100%;
+}
+/* line 33, ../sass/app.scss */
+#room #actor {
+  text-align: center;
+  padding: 10px 0;
+  background: #ddd;
 }

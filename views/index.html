@@ -5,76 +5,29 @@
 <head>
 	<meta charset="utf-8" />
   <meta name="viewport" content="width=device-width" />
-  <title>Foundation 4</title>
+  <title>Harlequin</title>
   <link rel="stylesheet" href="assets/css/app.css" />
   <script src="assets/js/vendor/custom.modernizr.js"></script>
 
 </head>
 <body>
+
   <nav class="top-bar">
     <ul class="title-area">
-      <!-- Title Area -->
       <li class="name">
-        <h1>
-          <a href="#">Top Bar Title</a>
-        </h1>
+        <h1><a href="/">Harlequin</a></h1>
       </li>
       <li class="toggle-topbar menu-icon"><a href="#"><span>menu</span></a></li>
     </ul>
-
-    <section class="top-bar-section">
-      <!-- Right Nav Section -->
-      <ul class="right">
-        <li class="divider"></li>
-        <li class="has-dropdown">
-          <a href="#">Main Item 1</a>
-          <ul class="dropdown">
-            <li><label>Section Name</label></li>
-            <li class="has-dropdown">
-              <a href="#" class="">Has Dropdown, Level 1</a>
-              <ul class="dropdown">
-                <li><a href="#">Dropdown Options</a></li>
-                <li><a href="#">Dropdown Options</a></li>
-                <li><a href="#">Level 2</a></li>
-                <li><a href="#">Subdropdown Option</a></li>
-                <li><a href="#">Subdropdown Option</a></li>
-                <li><a href="#">Subdropdown Option</a></li>
-              </ul>
-            </li>
-            <li><a href="#">Dropdown Option</a></li>
-            <li><a href="#">Dropdown Option</a></li>
-            <li class="divider"></li>
-            <li><label>Section Name</label></li>
-            <li><a href="#">Dropdown Option</a></li>
-            <li><a href="#">Dropdown Option</a></li>
-            <li><a href="#">Dropdown Option</a></li>
-            <li class="divider"></li>
-            <li><a href="#">See all &rarr;</a></li>
-          </ul>
-        </li>
-        <li class="divider"></li>
-        <li><a href="#">Main Item 2</a></li>
-        <li class="divider"></li>
-        <li class="has-dropdown">
-          <a href="#">Main Item 3</a>
-          <ul class="dropdown">
-            <li><a href="#">Dropdown Option</a></li>
-            <li><a href="#">Dropdown Option</a></li>
-            <li><a href="#">Dropdown Option</a></li>
-            <li class="divider"></li>
-            <li><a href="#">See all &rarr;</a></li>
-          </ul>
-        </li>
-      </ul>
-    </section>
   </nav>
 
   <div class="row">
     <div class="large-12 columns">
 
-      <div id="splash">
-        <h1>ZOMG! CHARADES!</h1>
-        <a href="#">Log in with Twitter</a>
+      <div id="splash" class="text-center">
+        <h1>Harlequin</h1>
+        <span class="subtitle">Internet charades <br/>with internet friends</span>
+        <a href="#" class="large button">Log in with Twitter</a>
       </div>
 
       <div id="lobby" class="text-center">
@@ -111,7 +64,9 @@
           </table>
         </div>
         <div class="large-8 columns">
-          <img src="http://placekitten.com/600/500"/>
+          <div id="actor">
+            <img src="http://placekitten.com/600/500"/>
+          </div>
           <table class="chat">
             <tbody>
               <tr><td><b>Neal: </b>hey</td></tr>
@@ -120,51 +75,29 @@
               <tr><td><b>Elmer: </b>hey everybody</td></tr>
             </tbody>
           </table>
+          <input type="text" placeholder="Chat and make guesses">
         </div>
       </div>
 
       <footer class="row">
         <div class="large-12 columns"><hr>
-            <div class="row">
-              <div class="large-6 columns">
-                <p>Created at Hollywood Hackday</p>
-              </div>
-
-              <div class="large-6 small-12 columns">
-                  <ul class="inline-list right">
-                    <li><a href="#">Link 1</a></li>
-                    <li><a href="#">Link 2</a></li>
-                    <li><a href="#">Link 3</a></li>
-                    <li><a href="#">Link 4</a></li>
-                  </ul>
-              </div>
+          <div class="row">
+            <div class="large-6 columns">
+              <p>Created at <a target="_blank" href="http://www.hollywoodhackday.com/">Hollywood Hack Day 2013</a></p>
             </div>
+
+            <div class="large-6 small-12 columns">
+                <ul class="inline-list right">
+                  <li><a href="#">FAQ</a></li>
+                  <li><a href="#">Source code</a></li>
+                  <li><a href="http://github.com/eddiezane/Harlequin">Legal Shit</a></li>
+                  <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+          </div>
         </div>
       </footer>
-
-    <!-- End Footer -->
-
     </div>
   </div>
-
-  <script>
-    document.write('<script src=' + ('__proto__' in {} ? 'assets/js/vendor/zepto' : 'assets/js/vendor/jquery') + '.js><\/script>')
-  </script>
-  <script src="assets/js/foundation/foundation.js"></script>
-  <script src="assets/js/foundation/foundation.alerts.js"></script>
-  <script src="assets/js/foundation/foundation.clearing.js"></script>
-  <script src="assets/js/foundation/foundation.cookie.js"></script>
-  <script src="assets/js/foundation/foundation.dropdown.js"></script>
-  <script src="assets/js/foundation/foundation.forms.js"></script>
-  <script src="assets/js/foundation/foundation.joyride.js"></script>
-  <script src="assets/js/foundation/foundation.magellan.js"></script>
-  <script src="assets/js/foundation/foundation.orbit.js"></script>
-  <script src="assets/js/foundation/foundation.placeholder.js"></script>
-  <script src="assets/js/foundation/foundation.reveal.js"></script>
-  <script src="assets/js/foundation/foundation.section.js"></script>
-  <script src="assets/js/foundation/foundation.tooltips.js"></script>
-  <script src="assets/js/foundation/foundation.topbar.js"></script>
-  <script src="assets/js/foundation/foundation.interchange.js"></script>
-  <script> $(document).foundation(); </script>
 </body>
 </html>

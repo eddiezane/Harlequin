@@ -3,17 +3,23 @@
 @import "foundation";
 
 // hiding for development purposes:
-#splash, #lobby { display: none; }
+#splash { display: none; }
+#lobby  { display: none; }
+//#room   { display: none; }
+
+#splash {
+  .subtitle {
+    text-align: center;
+    display: block;
+    position: relative;
+    font-size: 24px;
+    margin: 20px;
+  }
+}
 
 #lobby {
-  .create-room {
-    a {
-      font-size: 24px;
-      margin-bottom: 12px;
-      display: block;
-      position: relative;
-    }
-    input[type=radio] { display: none } // use custom foundation style
+  .button {
+    margin: 20px;
   }
 }
 
@@ -23,5 +29,10 @@
   }
   .chat {
     width: 100%;
+  }
+  #actor {
+    text-align:center;
+    padding: 10px 0;
+    background: #ddd;
   }
 }
