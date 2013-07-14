@@ -18,13 +18,42 @@ var express = require('express')
   , host = 'localhost:8080';
 
 
+
+
 // Debug
 var person = 'Ryan Gosling';
 var movie = 'drive';
 var yturl = 'https://www.youtube.com/embed/M7lc1UVf-VE?autoplay=1&showinfo=0';
 var hint1 = false;
-var hint2 = false
+var hint2 = false;
 //
+
+var movies = [
+  { 'person' : 'Ryan Gosling',
+    'movie'  : 'Drive',
+    'yturl'  : 'https://www.youtube.com/embed/M7lc1UVf-VE?autoplay=1&showinfo=0',
+    'hint1'  : false,
+    'hint2'  : false
+  },
+  { 'person' : 'Jesse Eisenberg',
+    'movie'  : 'The Social Network',
+    'yturl'  : 'http://www.youtube.com/watch?v=mFFtpd8VNN0',
+    'hint1'  : false,
+    'hint2'  : false
+  },
+  { 'person' : 'Leonardo DeCaprio',
+    'movie'  : 'Django Unchained',
+    'yturl'  : 'http://www.youtube.com/watch?v=8ExMBsT8VuY',
+    'hint1'  : false,
+    'hint2'  : false
+  },
+  { 'person' : 'Daniel Craig',
+    'movie'  : 'Casino Royale',
+    'yturl'  : 'http://www.youtube.com/watch?v=H9fyOFefirQ',
+    'hint1'  : false,
+    'hint2'  : false
+  }
+]
 
 if (process.env.NODE_ENV == 'production') {
   port = 80;
