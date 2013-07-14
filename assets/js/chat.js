@@ -9,8 +9,8 @@ var addMessage = function(username, text) {
 
 $chatInput.keypress(function(e) {
   if(e.which == 13) { // enter key was pressed
-    addMessage('derpy', this.value); // FIXME
-    socket.emit('message', { message: this.value });
+    addMessage('me', this.value);
+    socket.emit('message', { text: this.value });
     this.value = '';
   }
 });

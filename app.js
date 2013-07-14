@@ -7,7 +7,7 @@ var express = require('express')
   , passport = require('passport')
   , passportSocketIo = require('passport.socketio')
   , ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn
-  , ts = require('passport-twitter').Strategy 
+  , ts = require('passport-twitter').Strategy
   , opentok = require('opentok')
   , opentok_key = process.env.OPENTOK_KEY
   , opentok_secret = process.env.OPENTOK_SECRET
@@ -62,8 +62,8 @@ app.get('/', function(req, res) {
   res.sendfile(__dirname + '/views/index.html');
 });
 
-app.get('/lobby', ensureLoggedIn('/login'), function(req, res) {
-  res.sendfile(__dirname + '/views/toktest.html');
+app.get('/room', ensureLoggedIn('/login'), function(req, res) {
+  res.sendfile(__dirname + '/views/index.html');
 });
 
 app.get('/room/:id', ensureLoggedIn('/login'), function(req, res) {
@@ -72,8 +72,8 @@ app.get('/room/:id', ensureLoggedIn('/login'), function(req, res) {
 
 // Auth
 app.get('/auth/twitter', passport.authenticate('twitter'));
-app.get('/auth/twitter/callback', passport.authenticate('twitter', { 
-  successReturnToOrRedirect: '/lobby', failureRedirect: '/login' 
+app.get('/auth/twitter/callback', passport.authenticate('twitter', {
+  successReturnToOrRedirect: '/room', failureRedirect: '/login'
 }));
 
 app.get('/login', function(req, res) {
@@ -96,7 +96,7 @@ io.sockets.on('connection', function(socket) {
       socket.emit('roomCreated', {roomId: sessionId});
     });
   });
-    
+
   socket.on('joinRoom', function(data) {
     socket.set('roomId', data.roomId, function() {
       if (socket.join(data.roomId)) {
@@ -110,7 +110,7 @@ io.sockets.on('connection', function(socket) {
       if (err) {
         console.log(err);
       } else if (roomId) {
-        socket.broadcast.to(roomId).emit('message', {username: socket.handshake.user.username, text: data.text});  
+        socket.broadcast.to(roomId).emit('message', {username: socket.handshake.user.username, text: data.text});
       } else {
         console.log('No roomId');
       }

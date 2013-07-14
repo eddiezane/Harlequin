@@ -6,9 +6,8 @@ var mock_socket = {
   }
 };
 
-socket = mock_socket;
-//socket = io.connect('http://localhost');
-
+//socket = mock_socket;
+socket = io.connect('http://localhost:8080');
 
 //socket.on('broadcastMessage', function(data) { });
 //socket.on('newRound', function(data) { });

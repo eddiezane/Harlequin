@@ -2,14 +2,27 @@ var $splashDiv = $('#splash');
 var $lobbyDiv  = $('#lobby');
 var $roomDiv   = $('#room');
 var $allDivs   = $('#splash #lobby #room');
-
-$splashDiv.show(); // for now...
+var getRoomId = function() { return location.pathname.match(/room\/(.*)/)[1]; }
 
 stateMachine = {
   joinRoom: function(roomId) {
-    window.history.pushState("", "", '/room/' + roomId);
+    if (!getRoomId()) { // unless already in room
+      window.history.pushState("", "", '/room/' + roomId); // not always needed
+    }
     socket.emit('joinRoom', { roomId: roomId });
     $allDivs.hide();
-    $lobbyDiv.show();
+    $roomDiv.show();
   },
 }
+
+if (location.pathname.match(/room/)) {
+  var roomId = getRoomId();
+  if (roomId.length > 0) {
+    stateMachine.joinRoom(roomId);
+  } else {
+    $lobbyDiv.show();
+  }
+} else {
+  $splashDiv.show();
+}
+
