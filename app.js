@@ -2,7 +2,9 @@ var express = require('express')
   , app = express()
   , server = require('http').createServer(app)
   , io = require('socket.io').listen(server)
-  , oauth = require('oauth')
+  , passport = require('passport')
+  , ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn
+  , ts = require('passport-twitter').Strategy 
   , opentok = require('opentok')
   , opentok_key = process.env.OPENTOK_KEY
   , opentok_secret = process.env.OPENTOK_SECRET
@@ -10,59 +12,51 @@ var express = require('express')
   , twitter_secret = process.env.TWITTER_SECRET
   , location = '127.0.0.1';
 
-var ot = new opentok.OpenTokSDK(opentok_key, opentok_secret);
+  server.listen(8080);
 
-server.listen(8080);
+  var ot = new opentok.OpenTokSDK(opentok_key, opentok_secret);
 
-app.use('/assets', express.static('assets'));
+  app.use('/assets', express.static('assets'));
+  app.use(express.cookieParser());
+  app.use(express.session({secret: 'JFihuYI21JFH'}));
+  app.use(passport.initialize());
+  app.use(passport.session());
 
-consumer = function() {
-  return new oauth.OAuth("https://twitter.com/oauth/request_token",
-                         "https://twitter.com/oauth/access_token",
-                         twitter_key,
-                         twitter_secret,
-                         "1.0A",
-                         "http://localhost:8080/sessions/callback",
-                         "HMAC-SHA1");
-};
+  passport.serializeUser(function(user, done) {
+    done(null, user);
+  });
+
+passport.deserializeUser(function(obj, done) {
+  done(null, obj);
+});
+
+passport.use(new ts({
+  consumerKey: twitter_key,
+  consumerSecret: twitter_secret,
+  callbackURL: 'http://localhost:8080/auth/twitter/callback'
+},
+function(token, tokenSecret, profile, done) {
+  var user = profile;
+  console.log(profile.username);
+  return done(null, user);
+}
+));
+
+
+app.get('/auth/twitter', passport.authenticate('twitter'));
+app.get('/auth/twitter/callback', passport.authenticate('twitter', { successReturnToOrRedirect: '/', failureRedirect: '/login' }));
+
 
 app.get('/', function(req, res) {
-  console.log(ot);
   var sessionId = '';
   ot.createSession(location, function(result){
     sessionId = result;
     console.log(sessionId);
-    res.sendfile(__dirname + '/views/toktest.html');
+    res.sendfile(__dirname + '/views/index.html');
   });
 });
 
-app.get('/sessions/connect', function(req, res) {
-  return consumer().getOAuthRequestToken(function(error, oauthToken, oauthTokenSecret, results) {
-    if (error) {
-      return res.send('Error retrieving OAuth token');
-    } else {
-      req.session.oauthRequestToken = oauthToken;
-      req.session.oauthRequestTokenSecret = oauthTokenSecret;
-      return response.redirect("https://twitter.com/oauth/authorize?oauth_token=" + request.session.oauthRequestToken);
-    }
-  }
-});
-
-app.get('sessions/callback', function(req, res) {
-  return consumer.getOAuthRequestToken(function(request.session.oauthRequestToken, request.session.oauthRequestTokenSecret, request.query.oauth_verifier, function(error, oauthAccessToken, oauthAccessTokenSecret, results) {
-    if (!error) {
-      request.session.oauthAccessToken = oauthAccessToken;
-      request.session.oauthAccessTokenSecret = oauthAccessTokenSecret;
-      
-      return consumer().get("http://twitter.com/account/verify_credential.json", request.session.oauthAccessToken, request.session.oauthAccessTokenSecret, function(error, data, response) {
-        data = JSON.parse(data);
-        return response.send("You are signed in: " + data["screen_name"]);
-      });
-    }
-  }))
-});
-
-app.get('/lobby', function(req, res) {
+app.get('/lobby', ensureLoggedIn('/login'),function(req, res) {
   console.log(ot);
   var sessionId = '';
   ot.createSession(location, function(result){
@@ -76,3 +70,13 @@ app.get('/room/:id', function(req, res) {
   res.sendfile(__dirname + '/views/toktest.html');
 });
 
+app.get('/login',
+    function(req, res) {
+      res.send('<html><body><a href="/auth/twitter">Sign in with Twitter</a></body></html>');
+    });
+
+app.get('/logout',
+    function(req, res) {
+      req.logout();
+      res.redirect('/');
+    });
