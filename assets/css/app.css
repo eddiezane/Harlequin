@@ -6716,8 +6716,8 @@ a.th {
   display: block;
 }
 /* line 34, ../sass/app.scss */
-#room #actor {
+#room #actorContainer {
   text-align: center;
-  padding: 10px 0;
+  padding: 10px;
   background: #ddd;
 }
