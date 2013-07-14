@@ -17,6 +17,11 @@ var express = require('express')
   , port = 8080
   , host = 'localhost:8080';
 
+
+// Debug
+var person = 'ryan gosling';
+//
+
 if (process.env.NODE_ENV == 'production') {
   port = 80;
   host = 'hollywood.eddiezane.me';
@@ -118,6 +123,9 @@ io.sockets.on('connection', function(socket) {
         console.log(err);
       } else if (roomId) {
         socket.broadcast.to(roomId).emit('message', {username: socket.handshake.user.username, text: data.text});
+        if (data.text.indexOf(person) !== -1) {
+          io.sockets.in(roomId).emit('message', {username: 'GAME MASTER', text: 'WINNER IS ' + socket.handshake.user.username  + '!!!!!!'})
+        }
       } else {
         console.log('No roomId');
       }
