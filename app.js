@@ -42,20 +42,15 @@ function(token, tokenSecret, profile, done) {
 }
 ));
 
+function getFriends(token, tokenSecret) {
 
-app.get('/auth/twitter', passport.authenticate('twitter'));
-app.get('/auth/twitter/callback', passport.authenticate('twitter', { successReturnToOrRedirect: '/', failureRedirect: '/login' }));
+}
 
 app.get('/', function(req, res) {
-  var sessionId = '';
-  ot.createSession(location, function(result){
-    sessionId = result;
-    console.log(sessionId);
-    res.sendfile(__dirname + '/views/index.html');
-  });
+  res.sendfile(__dirname + '/views/index.html');
 });
 
-app.get('/lobby', ensureLoggedIn('/login'),function(req, res) {
+app.get('/lobby', ensureLoggedIn('/login'), function(req, res) {
   console.log(ot);
   var sessionId = '';
   ot.createSession(location, function(result){
@@ -65,17 +60,21 @@ app.get('/lobby', ensureLoggedIn('/login'),function(req, res) {
   });
 });
 
-app.get('/room/:id', function(req, res) {
-  res.sendfile(__dirname + '/views/toktest.html');
+app.get('/room/:id', ensureLoggedIn('/login'), function(req, res) {
+
 });
 
-app.get('/login',
-    function(req, res) {
-      res.send('<html><body><a href="/auth/twitter">Sign in with Twitter</a></body></html>');
-    });
+// Auth
+app.get('/auth/twitter', passport.authenticate('twitter'));
+app.get('/auth/twitter/callback', passport.authenticate('twitter', { 
+  successReturnToOrRedirect: '/', failureRedirect: '/login' 
+}));
 
-app.get('/logout',
-    function(req, res) {
-      req.logout();
-      res.redirect('/');
-    });
+app.get('/login', function(req, res) {
+  res.redirect('/auth/twitter');
+});
+
+app.get('/logout', function(req, res) {
+  req.logout();
+  res.redirect('/');
+});
