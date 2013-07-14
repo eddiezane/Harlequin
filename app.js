@@ -2,7 +2,10 @@ var express = require('express')
   , app = express()
   , server = require('http').createServer(app)
   , io = require('socket.io').listen(server)
+  , memoryStore = express.session.MemoryStore
+  , sessionStore = new memoryStore()
   , passport = require('passport')
+  , passportSocketIo = require('passport.socketio')
   , ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn
   , ts = require('passport-twitter').Strategy 
   , opentok = require('opentok')
@@ -18,7 +21,7 @@ var ot = new opentok.OpenTokSDK(opentok_key, opentok_secret);
 
 app.use('/assets', express.static('assets'));
 app.use(express.cookieParser());
-app.use(express.session({secret: 'JFihuYI21JFH'}));
+app.use(express.session({secret: 'JFihuYI21JFH', key: 'express.sid', store: sessionStore}));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -48,18 +51,19 @@ function getSession(myFunc) {
   });
 }
 
+io.set('authorization', passportSocketIo.authorize({
+  cookieParser: express.cookieParser,
+  key:          'express.sid',
+  secret:       'JFihuYI21JFH',
+  store:        sessionStore,
+}));
+
 app.get('/', function(req, res) {
   res.sendfile(__dirname + '/views/index.html');
 });
 
 app.get('/lobby', ensureLoggedIn('/login'), function(req, res) {
-  console.log(ot);
-  var sessionId = '';
-  ot.createSession(location, function(result){
-    sessionId = result;
-    console.log(sessionId);
-    res.sendfile(__dirname + '/views/toktest.html');
-  });
+  res.sendfile(__dirname + '/views/toktest.html');
 });
 
 app.get('/room/:id', ensureLoggedIn('/login'), function(req, res) {
@@ -69,7 +73,7 @@ app.get('/room/:id', ensureLoggedIn('/login'), function(req, res) {
 // Auth
 app.get('/auth/twitter', passport.authenticate('twitter'));
 app.get('/auth/twitter/callback', passport.authenticate('twitter', { 
-  successReturnToOrRedirect: '/', failureRedirect: '/login' 
+  successReturnToOrRedirect: '/lobby', failureRedirect: '/login' 
 }));
 
 app.get('/login', function(req, res) {
@@ -84,6 +88,7 @@ app.get('/logout', function(req, res) {
 // Socket Stuff
 io.sockets.on('connection', function(socket) {
   console.log('connection!');
+  // console.log(socket.handshake.user);
 
   socket.on('createRoom', function() {
     getSession(function(sessionId) {
@@ -104,8 +109,8 @@ io.sockets.on('connection', function(socket) {
     socket.get('roomId', function(err, roomId) {
       if (err) {
         console.log(err);
-      }else if (roomId) {
-        socket.broadcast.to(roomId).emit('message', {username: 'test', text: data.text});  
+      } else if (roomId) {
+        socket.broadcast.to(roomId).emit('message', {username: socket.handshake.user.username, text: data.text});  
       } else {
         console.log('No roomId');
       }

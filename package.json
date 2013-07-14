@@ -21,6 +21,7 @@
     "opentok": "~0.3.3",
     "passport": "~0.1.17",
     "passport-twitter": "~0.1.5",
-    "connect-ensure-login": "~0.1.1"
+    "connect-ensure-login": "~0.1.1",
+    "passport.socketio": "~1.2.1"
   }
 }
