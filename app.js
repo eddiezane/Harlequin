@@ -12,19 +12,19 @@ var express = require('express')
   , twitter_secret = process.env.TWITTER_SECRET
   , location = '127.0.0.1';
 
-  server.listen(8080);
+server.listen(8080);
 
-  var ot = new opentok.OpenTokSDK(opentok_key, opentok_secret);
+var ot = new opentok.OpenTokSDK(opentok_key, opentok_secret);
 
-  app.use('/assets', express.static('assets'));
-  app.use(express.cookieParser());
-  app.use(express.session({secret: 'JFihuYI21JFH'}));
-  app.use(passport.initialize());
-  app.use(passport.session());
+app.use('/assets', express.static('assets'));
+app.use(express.cookieParser());
+app.use(express.session({secret: 'JFihuYI21JFH'}));
+app.use(passport.initialize());
+app.use(passport.session());
 
-  passport.serializeUser(function(user, done) {
-    done(null, user);
-  });
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
 
 passport.deserializeUser(function(obj, done) {
   done(null, obj);
@@ -45,7 +45,6 @@ function(token, tokenSecret, profile, done) {
 
 app.get('/auth/twitter', passport.authenticate('twitter'));
 app.get('/auth/twitter/callback', passport.authenticate('twitter', { successReturnToOrRedirect: '/', failureRedirect: '/login' }));
-
 
 app.get('/', function(req, res) {
   var sessionId = '';
