@@ -1,8 +1,12 @@
 var $splashDiv = $('#splash');
 var $lobbyDiv  = $('#lobby');
 var $roomDiv   = $('#room');
-var $allDivs   = $('#splash #lobby #room');
-var getRoomId = function() { return location.pathname.match(/room\/(.*)/)[1]; }
+var $allDivs   = $('#splash, #lobby, #room');
+var getRoomId = function() {
+  matches = location.pathname.match(/room\/(.*)/);
+  if (!matches) return '';
+  return matches[1];
+}
 
 stateMachine = {
   joinRoom: function(roomId) {
