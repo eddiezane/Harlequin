@@ -4,7 +4,7 @@ var $chatLog   = $("#chatLog");
 var addMessage = function(username, text) {
   var header = "<b>" + username + "</b>: ";
   $chatLog.find('tr:last').after('<tr><td>' + header + text + '</td></tr>');
-  $chatLog.scrollTop($chatLog.height()); // autoscroll to bottom
+  $chatLog.scrollTop(99999); // autoscroll to bottom
 }
 
 $chatInput.keypress(function(e) {
