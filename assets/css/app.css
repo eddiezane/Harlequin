@@ -6714,10 +6714,13 @@ a.th {
   width: 100%;
 }
 /* line 30, ../sass/app.scss */
-#room .chat {
+#room .chatLog {
   width: 100%;
+  height: 200px;
+  overflow: scroll;
+  display: block;
 }
-/* line 33, ../sass/app.scss */
+/* line 36, ../sass/app.scss */
 #room #actor {
   text-align: center;
   padding: 10px 0;

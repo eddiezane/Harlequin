@@ -1,34 +1,28 @@
-var socket = io.connect('http://localhost');
-socket.on('broadcastMessage', function(data) { });
-socket.on('newRound', function(data) { });
-socket.on('roundDone', function(data) { });
-socket.on('roundStarting', function(data) { });
-socket.on('roundStart', function(data) { });
+//var socket = io.connect('http://localhost');
+//socket.on('broadcastMessage', function(data) { });
+//socket.on('newRound', function(data) { });
+//socket.on('roundDone', function(data) { });
+//socket.on('roundStarting', function(data) { });
+//socket.on('roundStart', function(data) { });
 //socket.emit('my other event', { my: 'data' });
 
-// EXAMPLE CODE from http://net.tutsplus.com/tutorials/javascript-ajax/real-time-chat-with-nodejs-socket-io-and-expressjs/:
-/*
-var messages = [];
-var socket = io.connect('http://localhost:3700');
-var field = document.getElementById("field");
-var sendButton = document.getElementById("send");
-var content = document.getElementById("content");
+//var socket    = io.connect('http://localhost:3700');
+var $chatInput = $("#chatInput");
+var $chatLog   = $("#chatLog");
 
-socket.on('message', function (data) {
-    if(data.message) {
-        messages.push(data.message);
-        var html = '';
-        for(var i=0; i<messages.length; i++) {
-            html += messages[i] + '<br />';
-        }
-        content.innerHTML = html;
-    } else {
-        console.log("There is a problem:", data);
-    }
+var addMessage = function(username, text) {
+  var header = "<b>" + username + "</b>: ";
+  $chatLog.find('tr:last').after('<tr><td>' + header + text + '</td></tr>');
+  $chatLog.scrollTop($chatLog.height()); // autoscroll to bottom
+}
+
+$chatInput.keypress(function(e) {
+  if(e.which == 13) { // enter key was pressed
+    addMessage('derpy', this.value); //socket.emit('message', { message: this.value });
+    this.value = '';
+  }
 });
 
-sendButton.onclick = function() {
-    var text = field.value;
-    socket.emit('send', { message: text });
-};
-*/
+//socket.on('message', function (data) {
+//  addMessage(data.username, data.text);
+//});
