@@ -19,7 +19,11 @@ var express = require('express')
 
 
 // Debug
-var person = 'ryan gosling';
+var person = 'Ryan Gosling';
+var movie = 'drive';
+var yturl = 'https://www.youtube.com/embed/M7lc1UVf-VE?autoplay=1&showinfo=0';
+var hint1 = false;
+var hint2 = false
 //
 
 if (process.env.NODE_ENV == 'production') {
@@ -122,8 +126,20 @@ io.sockets.on('connection', function(socket) {
       if (err) {
         console.log(err);
       } else if (roomId) {
+        if (!hint1) {
+          hint1 = true;
+          setTimeout(function() {
+            io.sockets.in(roomId).emit('message', {username: 'HINT', text: 'Main character is: ' + person});
+          }, 18000);
+        }
+        if (!hint2) {
+          hint2 = true;
+          setTimeout(function() {
+            io.sockets.in(roomId).emit('hint', {url: yturl});
+          }, 36000);
+        }
         socket.broadcast.to(roomId).emit('message', {username: socket.handshake.user.username, text: data.text});
-        if (data.text.indexOf(person) !== -1) {
+        if (data.text.indexOf(movie) !== -1) {
           io.sockets.in(roomId).emit('message', {username: 'GAME MASTER', text: 'WINNER IS ' + socket.handshake.user.username  + '!!!!!!'})
         }
       } else {
