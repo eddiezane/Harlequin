@@ -63,7 +63,7 @@ app.get('/lobby', ensureLoggedIn('/login'), function(req, res) {
 });
 
 app.get('/room/:id', ensureLoggedIn('/login'), function(req, res) {
-
+  res.sendfile(__dirname + '/views/index.html');
 });
 
 // Auth
@@ -87,7 +87,7 @@ io.sockets.on('connection', function(socket) {
 
   socket.on('createRoom', function() {
     getSession(function(sessionId) {
-      console.log('room: ' + sessionId ' created');
+      console.log("room: " + sessionId + " created");
       socket.emit('roomCreated', {roomId: sessionId});
     });
   });
@@ -96,6 +96,18 @@ io.sockets.on('connection', function(socket) {
     socket.set('roomId', data.roomId, function() {
       if (socket.join(data.roomId)) {
         console.log('room: ' + data.roomId + ' for player');
+      }
+    });
+  });
+
+  socket.on('message', function(data) {
+    socket.get('roomId', function(err, roomId) {
+      if (err) {
+        console.log(err);
+      }else if (roomId) {
+        socket.broadcast.to(roomId).emit('message', {username: 'test', text: data.text});  
+      } else {
+        console.log('No roomId');
       }
     });
   });
