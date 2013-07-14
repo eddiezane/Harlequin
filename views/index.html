@@ -5,7 +5,7 @@
 <head>
 	<meta charset="utf-8" />
   <meta name="viewport" content="width=device-width" />
-  <title>Harlequin</title>
+  <title>MockingBird</title>
   <link rel="stylesheet" href="assets/css/app.css" />
 </head>
 <body>
@@ -13,7 +13,7 @@
   <nav class="top-bar">
     <ul class="title-area">
       <li class="name">
-        <h1><a href="/">Harlequin</a></h1>
+        <h1><a href="/">MockingBird</a></h1>
       </li>
       <li class="toggle-topbar menu-icon"><a href="#"><span>menu</span></a></li>
     </ul>
@@ -23,13 +23,13 @@
     <div class="large-12 columns">
 
       <div id="splash" class="text-center">
-        <h1>Harlequin</h1>
+        <h1>MockingBird</h1>
         <span class="subtitle">Internet charades <br/>with internet friends</span>
         <a href="#" class="large button">Log in with Twitter</a>
       </div>
 
       <div id="lobby" class="text-center">
-        <a href="#" class="large button">Create a new game</a>
+        <a href="#" class="large button" id="createRoom">Create a new game</a>
           <h1>If you want to join a friend's current game, have them send you the link they're on.</h1>
           <h3>It'll look something like "http://foo.com/room/&lt;random&gt;"</h3>
       </div>
@@ -95,6 +95,11 @@
   <script src="/assets/js/vendor/custom.modernizr.js"></script>
   <script src="/assets/js/vendor/jquery.js"></script>
   <script src="/socket.io/socket.io.js"></script>
+
+  <script src="/assets/js/socket.js"></script>
+  <script src="/assets/js/stateMachine.js"></script>
+  <script src="/assets/js/chat.js"></script>
+  <script src="/assets/js/room.js"></script>
   <script src="/assets/js/app.js"></script>
 </body>
 </html>

@@ -2,10 +2,8 @@
 @import "normalize";
 @import "foundation";
 
-// hiding for development purposes:
-#splash { display: none; }
-#lobby  { display: none; }
-//#room   { display: none; }
+// hiding, since stateMachine.js will reveal
+#splash, #lobby, #room { display: none; }
 
 #splash {
   .subtitle {
