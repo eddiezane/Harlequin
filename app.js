@@ -13,9 +13,16 @@ var express = require('express')
   , opentok_secret = process.env.OPENTOK_SECRET
   , twitter_key = process.env.TWITTER_KEY
   , twitter_secret = process.env.TWITTER_SECRET
-  , location = '127.0.0.1';
+  , location = '127.0.0.1'
+  , port = 8080
+  , host = 'localhost:8080';
 
-server.listen(8080);
+if (process.env.NODE_ENV == 'production') {
+  port = 80;
+  host = 'hollywood.eddiezane.me';
+}
+
+server.listen(port);
 
 var ot = new opentok.OpenTokSDK(opentok_key, opentok_secret);
 
@@ -36,7 +43,7 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new ts({
   consumerKey: twitter_key,
   consumerSecret: twitter_secret,
-  callbackURL: 'http://localhost:8080/auth/twitter/callback'
+  callbackURL: 'http://' + host + '/auth/twitter/callback'
 },
 function(token, tokenSecret, profile, done) {
   var user = profile;
