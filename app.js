@@ -42,9 +42,9 @@ function(token, tokenSecret, profile, done) {
 }
 ));
 
-function getSession() {
+function getSession(myFunc) {
   ot.createSession(location, function(result) {
-    return result;
+    myFunc(result);
   });
 }
 
@@ -85,8 +85,20 @@ app.get('/logout', function(req, res) {
 io.sockets.on('connection', function(socket) {
   console.log('connection!');
 
-  socket.on('requestSession', function(data) {
-    socket.emit('
-  }
+  socket.on('createRoom', function() {
+    getSession(function(sessionId) {
+      console.log('room: ' + sessionId ' created');
+      socket.emit('roomCreated', {roomId: sessionId});
+    });
+  });
+    
+  socket.on('joinRoom', function(data) {
+    socket.set('roomId', data.roomId, function() {
+      if (socket.join(data.roomId)) {
+        console.log('room: ' + data.roomId + ' for player');
+      }
+    });
+  });
+
 });
 
