@@ -42,8 +42,10 @@ function(token, tokenSecret, profile, done) {
 }
 ));
 
-function getFriends(token, tokenSecret) {
-
+function getSession() {
+  ot.createSession(location, function(result) {
+    return result;
+  });
 }
 
 app.get('/', function(req, res) {
@@ -78,3 +80,13 @@ app.get('/logout', function(req, res) {
   req.logout();
   res.redirect('/');
 });
+
+// Socket Stuff
+io.sockets.on('connection', function(socket) {
+  console.log('connection!');
+
+  socket.on('requestSession', function(data) {
+    socket.emit('
+  }
+});
+
