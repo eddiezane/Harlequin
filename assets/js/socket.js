@@ -1,13 +1,4 @@
-var mock_socket = {
-  on: function(){},
-  emit: function(msg, data) {
-    console.log('-- ' + msg + ' --');
-    console.log(data);
-  }
-};
-
-//socket = mock_socket;
-socket = io.connect('http://localhost:8080');
+socket = io.connect('/');
 
 //socket.on('broadcastMessage', function(data) { });
 //socket.on('newRound', function(data) { });
