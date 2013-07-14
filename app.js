@@ -17,6 +17,7 @@ var express = require('express')
   , port = 8080
   , host = 'localhost:8080';
 
+var isGameInProgress = false;
 
 
 
@@ -133,7 +134,6 @@ app.get('/logout', function(req, res) {
 // Socket Stuff
 io.sockets.on('connection', function(socket) {
   console.log('connection!');
-  // console.log(socket.handshake.user);
 
   socket.on('createRoom', function() {
     getSession(function(sessionId) {
@@ -146,6 +146,13 @@ io.sockets.on('connection', function(socket) {
     socket.set('roomId', data.roomId, function() {
       if (socket.join(data.roomId)) {
         console.log('room: ' + data.roomId + ' for player');
+        var numPlayers = io.sockets.clients(data.roomId).length;
+        if (numPlayers >= 3 && !isGameInProgress) {
+          isGameInProgress = true;
+          io.sockets.in(data.roomId).emit('message', {username: 'GAME MASTER', text: 'Welcome, all ' + numPlayers + ' of you! Let\'s start!'});
+          setTimeout(function() { io.sockets.in(roomId).emit('message', {username: 'HINT', text: 'Main character is: ' + person}); }, 18000);
+          setTimeout(function() { io.sockets.in(roomId).emit('hint', {url: yturl}); }, 36000);
+        }
       }
     });
   });
@@ -155,18 +162,6 @@ io.sockets.on('connection', function(socket) {
       if (err) {
         console.log(err);
       } else if (roomId) {
-        if (!hint1) {
-          hint1 = true;
-          setTimeout(function() {
-            io.sockets.in(roomId).emit('message', {username: 'HINT', text: 'Main character is: ' + person});
-          }, 18000);
-        }
-        if (!hint2) {
-          hint2 = true;
-          setTimeout(function() {
-            io.sockets.in(roomId).emit('hint', {url: yturl});
-          }, 36000);
-        }
         socket.broadcast.to(roomId).emit('message', {username: socket.handshake.user.username, text: data.text});
         if (data.text.indexOf(movie) !== -1) {
           io.sockets.in(roomId).emit('message', {username: 'GAME MASTER', text: 'WINNER IS ' + socket.handshake.user.username  + '!!!!!!'})
