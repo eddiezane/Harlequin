@@ -23,7 +23,7 @@ var isGameInProgress = false;
 var movies = [
   { 'person' : 'Ryan Gosling',
     'movie'  : 'Drive',
-    'yturl'  : 'http://www.youtube.com/embed/CWX34ShfcsE?autoplay=1&showinfo=0',
+    'yturl'  : 'http://www.youtube.com/embed/Pe6eOqheva8?autoplay=1&showinfo=0',
   },
   { 'person' : 'Daniel Craig',
     'movie'  : 'Casino Royale',
@@ -160,6 +160,7 @@ io.sockets.on('connection', function(socket) {
 });
 
 function startRound(roomId) {
+  io.sockets.in(roomId).emit('removeHint', {});
   for (var i=0; i<timeouts.length; i++) {
     clearTimeout(timeouts[i]);
   }
@@ -169,11 +170,11 @@ function startRound(roomId) {
   myMovieIndex = currentMovieIndex;
   io.sockets.in(roomId).emit('message', {username: 'GAME MASTER', text: 'Round ' + (myMovieIndex + 1) + ' starting! You have 30 seconds!'});
 
-  timeouts.push(setTimeout(function() { io.sockets.in(roomId).emit('message', {username: 'HINT', text: 'The main character is: ' + currentMovie['person']}); }, 10000));
-  timeouts.push(setTimeout(function() { io.sockets.in(roomId).emit('message', {username: 'GAME MASTER', text: '15 seconds left! Hurry!'}); }, 15000));
-  timeouts.push(setTimeout(function() { io.sockets.in(roomId).emit('hint', {url: currentMovie['yturl']}); }, 20000));
+  timeouts.push(setTimeout(function() { io.sockets.in(roomId).emit('message', {username: 'HINT', text: 'The main character is: ' + currentMovie['person']}); }, 20000));
+  timeouts.push(setTimeout(function() { io.sockets.in(roomId).emit('message', {username: 'GAME MASTER', text: '30 seconds left! Hurry!'}); }, 30000));
+  timeouts.push(setTimeout(function() { io.sockets.in(roomId).emit('hint', {url: currentMovie['yturl']}); }, 45000));
   timeouts.push(setTimeout(function() {
     io.sockets.in(roomId).emit('message', {username: 'GAME MASTER', text: 'Nobody guessed correctly! It was ' + currentMovie['movie']});
     startRound(roomId);
-  }, 30000));
+  }, 60000));
 }
