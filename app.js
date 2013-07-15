@@ -15,46 +15,31 @@ var express = require('express')
   , twitter_secret = process.env.TWITTER_SECRET
   , location = '127.0.0.1'
   , port = 8080
-  , host = 'localhost:8080';
+  , host = 'localhost:8080'
+  , timeouts = [];
 
 var isGameInProgress = false;
-
-
-
-// Debug
-var person = 'Ryan Gosling';
-var movie = 'drive';
-var yturl = 'https://www.youtube.com/embed/M7lc1UVf-VE?autoplay=1&showinfo=0';
-var hint1 = false;
-var hint2 = false;
-//
 
 var movies = [
   { 'person' : 'Ryan Gosling',
     'movie'  : 'Drive',
-    'yturl'  : 'https://www.youtube.com/embed/M7lc1UVf-VE?autoplay=1&showinfo=0',
-    'hint1'  : false,
-    'hint2'  : false
-  },
-  { 'person' : 'Jesse Eisenberg',
-    'movie'  : 'The Social Network',
-    'yturl'  : 'http://www.youtube.com/watch?v=mFFtpd8VNN0',
-    'hint1'  : false,
-    'hint2'  : false
-  },
-  { 'person' : 'Leonardo DeCaprio',
-    'movie'  : 'Django Unchained',
-    'yturl'  : 'http://www.youtube.com/watch?v=8ExMBsT8VuY',
-    'hint1'  : false,
-    'hint2'  : false
+    'yturl'  : 'http://www.youtube.com/embed/CWX34ShfcsE?autoplay=1&showinfo=0',
   },
   { 'person' : 'Daniel Craig',
     'movie'  : 'Casino Royale',
-    'yturl'  : 'http://www.youtube.com/watch?v=H9fyOFefirQ',
-    'hint1'  : false,
-    'hint2'  : false
-  }
+    'yturl'  : 'http://www.youtube.com/embed/H9fyOFefirQ?autoplay=1&showinfo=0',
+  },
+  { 'person' : 'Jesse Eisenberg',
+    'movie'  : 'The Social Network',
+    'yturl'  : 'http://www.youtube.com/embed/mFFtpd8VNN0?autoplay=1&showinfo=0',
+  },
+  { 'person' : 'Leonardo DeCaprio',
+    'movie'  : 'Django Unchained',
+    'yturl'  : 'http://www.youtube.com/embed/8ExMBsT8VuY?autoplay=1&showinfo=0',
+  },
 ]
+currentMovieIndex = -1;
+currentMovie = movies[0]; // no need to instantiate?
 
 if (process.env.NODE_ENV == 'production') {
   port = 80;
@@ -150,8 +135,7 @@ io.sockets.on('connection', function(socket) {
         if (numPlayers >= 3 && !isGameInProgress) {
           isGameInProgress = true;
           io.sockets.in(data.roomId).emit('message', {username: 'GAME MASTER', text: 'Welcome, all ' + numPlayers + ' of you! Let\'s start!'});
-          setTimeout(function() { io.sockets.in(roomId).emit('message', {username: 'HINT', text: 'Main character is: ' + person}); }, 18000);
-          setTimeout(function() { io.sockets.in(roomId).emit('hint', {url: yturl}); }, 36000);
+          startRound(data.roomId);
         }
       }
     });
@@ -163,8 +147,9 @@ io.sockets.on('connection', function(socket) {
         console.log(err);
       } else if (roomId) {
         socket.broadcast.to(roomId).emit('message', {username: socket.handshake.user.username, text: data.text});
-        if (data.text.indexOf(movie) !== -1) {
-          io.sockets.in(roomId).emit('message', {username: 'GAME MASTER', text: 'WINNER IS ' + socket.handshake.user.username  + '!!!!!!'})
+        if (data.text.toLowerCase().indexOf(currentMovie['movie'].toLowerCase()) !== -1) {
+          io.sockets.in(roomId).emit('message', {username: 'GAME MASTER', text: socket.handshake.user.username  + ' correctly answered "' + currentMovie['movie'] + '"! 10 points awarded!'})
+          startRound(roomId);
         }
       } else {
         console.log('No roomId');
@@ -174,3 +159,21 @@ io.sockets.on('connection', function(socket) {
 
 });
 
+function startRound(roomId) {
+  for (var i=0; i<timeouts.length; i++) {
+    clearTimeout(timeouts[i]);
+  }
+
+  currentMovieIndex += 1;
+  currentMovie = movies[currentMovieIndex];
+  myMovieIndex = currentMovieIndex;
+  io.sockets.in(roomId).emit('message', {username: 'GAME MASTER', text: 'Round ' + (myMovieIndex + 1) + ' starting! You have 30 seconds!'});
+
+  timeouts.push(setTimeout(function() { io.sockets.in(roomId).emit('message', {username: 'HINT', text: 'The main character is: ' + currentMovie['person']}); }, 10000));
+  timeouts.push(setTimeout(function() { io.sockets.in(roomId).emit('message', {username: 'GAME MASTER', text: '15 seconds left! Hurry!'}); }, 15000));
+  timeouts.push(setTimeout(function() { io.sockets.in(roomId).emit('hint', {url: currentMovie['yturl']}); }, 20000));
+  timeouts.push(setTimeout(function() {
+    io.sockets.in(roomId).emit('message', {username: 'GAME MASTER', text: 'Nobody guessed correctly! It was ' + currentMovie['movie']});
+    startRound(roomId);
+  }, 30000));
+}

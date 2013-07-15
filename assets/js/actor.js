@@ -1,6 +1,6 @@
 var apiKey = "35094622";
-var sessionId = "1_MX4zNTA5NDYyMn4xMjcuMC4wLjF-U3VuIEp1bCAxNCAxNDo0MDowOSBQRFQgMjAxM34wLjYxODM1MzR-"; // Replace with your own session ID. See https://dashboard.tokbox.com/projects
-var token = "T1==cGFydG5lcl9pZD0zNTA5NDYyMiZzZGtfdmVyc2lvbj10YnJ1YnktdGJyYi12MC45MS4yMDExLTAyLTE3JnNpZz03MjI2ZDk1NDQ5NWI4ZTM3NzA1YTg2MWRmMTJiMDg2ZDRhMjZkYzZkOnJvbGU9bW9kZXJhdG9yJnNlc3Npb25faWQ9MV9NWDR6TlRBNU5EWXlNbjR4TWpjdU1DNHdMakYtVTNWdUlFcDFiQ0F4TkNBeE5EbzBNRG93T1NCUVJGUWdNakF4TTM0d0xqWXhPRE0xTXpSLSZjcmVhdGVfdGltZT0xMzczODM4MDE5Jm5vbmNlPTAuNDQ3Mjg2MzkyMDIzNTYzNyZleHBpcmVfdGltZT0xMzc2NDMwMDE5JmNvbm5lY3Rpb25fZGF0YT0="; // Replace with a generated token. See https://dashboard.tokbox.com/projects
+var sessionId = "1_MX4zNTA5NDYyMn4xMjcuMC4wLjF-U3VuIEp1bCAxNCAxNjo0ODoxMSBQRFQgMjAxM34wLjcwNDIyMTl-"; // Replace with your own session ID. See https://dashboard.tokbox.com/projects
+var token = "T1==cGFydG5lcl9pZD0zNTA5NDYyMiZzZGtfdmVyc2lvbj10YnJ1YnktdGJyYi12MC45MS4yMDExLTAyLTE3JnNpZz02NTgyMTNmMGE1MmY1ODQ2MTFjNWY4MThiNWEyNzkxZmFkNWI0OGQ1OnJvbGU9bW9kZXJhdG9yJnNlc3Npb25faWQ9MV9NWDR6TlRBNU5EWXlNbjR4TWpjdU1DNHdMakYtVTNWdUlFcDFiQ0F4TkNBeE5qbzBPRG94TVNCUVJGUWdNakF4TTM0d0xqY3dOREl5TVRsLSZjcmVhdGVfdGltZT0xMzczODQ1Njk4Jm5vbmNlPTAuMzg4NTM5MTAzOTY1MjE3NCZleHBpcmVfdGltZT0xMzc2NDM3Njk4JmNvbm5lY3Rpb25fZGF0YT0="; // Replace with a generated token. See https://dashboard.tokbox.com/projects
 var PROPS = {width: 600, height: 500};
 var myDiv = 'actorContainer'
 
